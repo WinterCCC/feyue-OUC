@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'zh-CN' }}">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title %}{{ page.title | escape }} | {% endif %}{{ site.title | escape }}</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+
+<body>
+  <!-- 顶部导航栏 -->
+  <header class="top-header">
+    <div class="header-content">
+      <div class="logo-section">
+        <a href="/" class="logo">
+          <span class="logo-icon">🎓</span>
+          <span class="logo-text">{{ site.title | escape }}</span>
+        </a>
+      </div>
+
+      <nav class="top-nav">
+        <a href="/" class="nav-item">首页</a>
+        <a href="/abroad" class="nav-item">出国留学</a>
+      </nav>
+
+      <div class="header-right">
+        <input type="text" class="search-box" placeholder="Search">
+        <a href="https://github.com/ouc-feiyue/feiyue-ouc" class="github-link" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="site-wrapper">
+    <!-- 左侧菜单 -->
+    <aside class="sidebar-nav">
+      <nav class="sidebar-menu">
+        <a href="/" class="menu-item">首页</a>
+        <a href="#about" class="menu-item">关于</a>
+        <a href="#links" class="menu-item">友链</a>
+        <a href="#glossary" class="menu-item">名词解释</a>
+        <a href="#faq" class="menu-item">Q & A</a>
+      </nav>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <div class="main-content">
+      <main class="page-content">
+        {{ content }}
+      </main>
+    </div>
+
+    <!-- 右侧目录 -->
+    <aside class="sidebar-toc">
+      <div class="toc-title" id="toc-title">本页导航</div>
+      <nav class="toc-nav" id="toc-nav">
+        <!-- 自动生成的目录 -->
+      </nav>
+    </aside>
+
+    <script>
+      // 自动生成页面目录导航或显示章节导航
+      document.addEventListener('DOMContentLoaded', function() {
+        const tocNav = document.getElementById('toc-nav');
+        const tocTitle = document.getElementById('toc-title');
+        const currentPath = window.location.pathname;
+
+        // 出国留学章节导航
+        const abroadChapters = [
+          { title: '01. GPA 与标化考试', url: '/abroad/gpa-exam' },
+          { title: '02. 背景经历', url: '/abroad/background' },
+          { title: '03. 推荐信', url: '/abroad/recommendation-letter' },
+          { title: '04. 选校定位', url: '/abroad/school-selection' },
+          { title: '05. 套磁', url: '/abroad/reaching-out' },
+          { title: '06. 申请文书', url: '/abroad/application-essay' },
+          { title: '07. 申请材料清单', url: '/abroad/materials' },
+          { title: '08. 网申', url: '/abroad/online-application' },
+          { title: '09. 申请时间规划', url: '/abroad/timeline' },
+          { title: '10. 常见问题', url: '/abroad/faq' },
+          { title: '11. 关键成功要素', url: '/abroad/key-success' },
+          { title: '12. 资源推荐', url: '/abroad/resources' }
+        ];
+
+        // 检查是否在出国留学相关页面
+        if (currentPath.startsWith('/abroad')) {
+          tocTitle.textContent = '出国留学章节';
+
+          abroadChapters.forEach((chapter) => {
+            const link = document.createElement('a');
+            link.href = chapter.url;
+            link.className = 'toc-item';
+            link.textContent = chapter.title;
+
+            // 标记当前章节
+            if (currentPath === chapter.url || currentPath === chapter.url + '/') {
+              link.style.color = '#667eea';
+              link.style.borderLeftColor = '#667eea';
+            }
+
+            tocNav.appendChild(link);
+          });
+        } else {
+          // 自动生成页面内容的目录
+          const headings = document.querySelectorAll('.page-content h2, .page-content h3');
+
+          if (headings.length === 0) return;
+
+          headings.forEach((heading, index) => {
+            const id = heading.id || `heading-${index}`;
+            heading.id = id;
+
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.className = `toc-item ${heading.tagName.toLowerCase()}`;
+            link.textContent = heading.textContent;
+
+            tocNav.appendChild(link);
+          });
+        }
+      });
+    </script>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p>&copy; 2024 {{ site.title }}. MIT License.</p>
+    </div>
+  </footer>
+</body>
+
+</html>

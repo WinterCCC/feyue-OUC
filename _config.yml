@@ -1,0 +1,16 @@
+theme: minima
+title: 中国海洋大学飞跃手册
+description: 中国海洋大学飞跃手册
+author: 中国海洋大学学生会
+url: https://ouc-feiyue.github.io
+lang: zh-CN
+
+# 自定义导航
+navigation:
+  - title: 首页
+    url: /
+  - title: 出国留学
+    url: /categories/guowai
+
+# 博客设置
+excerpt_separator: "<!--more-->"
